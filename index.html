@@ -1,81 +1,162 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Required meta tags-->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <!-- Color theme for statusbar -->
-        <meta name="theme-color" content="#2196f3">
-        <!-- Your app title -->
-        <title>My App</title>
-        <!-- Path to Framework7 Library CSS, Material Theme -->
-        <link rel="stylesheet" href="css/framework7.material.min.css">
-        <!-- Path to Framework7 color related styles, Material Theme -->
-        <link rel="stylesheet" href="css/framework7.material.colors.min.css">
-        <!-- Path to your custom app styles-->
-        <link rel="stylesheet" href="css/my-app.css">
-    </head>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>My App</title>
+    <!-- Path to Framework7 Library CSS, Material Theme -->
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <!-- Path to Framework7 color related styles, Material Theme -->
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/my-app.css">
+  </head>
     
-    <body>
-        <!-- Status bar overlay for fullscreen mode-->
-        <!-- http://framework7.io/docs/status-bar.html-->
-        <div class="statusbar-overlay"></div>
+  <body>
+    <!-- Status bar overlay for fullscreen mode-->
+    <!-- http://framework7.io/docs/status-bar.html-->
+    <div class="statusbar-overlay"></div>
+
+    <!-- Panels overlay-->
+    <!-- http://framework7.io/docs/side-panels.html-->
+    <div class="panel-overlay"></div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+        <p>Right panel content goes here</p>
+      </div>
+    </div>
+
+    <!-- Views-->
+    <div class="views">
+      <!-- Your main view -->
+      <div class="view view-main">
         
-        <!-- Panels overlay-->
-        <!-- http://framework7.io/docs/side-panels.html-->
-        <div class="panel-overlay"></div>
-        <!-- Right panel with cover effect-->
-        <div class="panel panel-right panel-cover">
-          <div class="content-block">
-            <p>Right panel content goes here</p>
+        <!-- Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <!-- We have home navbar without left link-->
+            <div class="center">Navbar</div>
+            <div class="right">
+              <!-- Right link contains only icon - additional "icon-only" class-->
+              <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+            </div>
           </div>
         </div>
+        <!-- /End of Top Navbar-->
         
-        <!-- Views-->
-        <div class="views">
-            <!-- Your main view -->
-            <div class="view view-main">
-                
-            <!-- Top Navbar-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <!-- We have home navbar without left link-->
-                        <div class="center sliding">Navbar</div>
-                        <div class="right">
-                            <!-- Right link contains only icon - additional "icon-only" class-->
-                            <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                        </div>
+        <!-- Pages -->
+        <div class="pages">
+          <!-- Page index, additional "navbar-fixed" and "toolbar-fixed" classes-->
+          <div data-page="index" class="page navbar-fixed toolbar-fixed">
+            <div class="page-content">
+              <div class="list-block">
+                <a href="VparkMyCar.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Park my car</div>
                     </div>
-                </div>
-                <!-- /End of Top Navbar-->
-                
-                <!-- Pages -->
-                <div class="pages">
-                    <!-- Page additional "navbar-fixed" and "toolbar-fixed" classes-->
-                    <div data-page="index" class="page navbar-fixed toolbar-fixed">
-                        <div class="page-content">
-                            <p>Other content goes here</p>
-                        </div>
+                  </div>
+                </a>
+                <a href="Vagenda.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Agenda</div>
                     </div>
-                </div>
-                <!-- /End of Pages -->
-                
-                <!-- Bottom Toolbar-->
-                <div class="toolbar">
-                    <div class="toolbar-inner">
-                        <p>Toolbar</p>
+                  </div>
+                </a>
+                <a href="Vstatistics.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Statistics</div>
                     </div>
-                </div>          
-                <!-- /End of Bottom Toolbar-->
-                
+                  </div>
+                </a>
+                <a href="VfindMyCar.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Find my car</div>
+                    </div>
+                  </div>
+                </a>
+                <a href="VaddCar.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Add car</div>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
+          </div>
         </div>
+        <!-- /End of Pages -->
+        <!-- Bottom Toolbar-->
+        <div class="toolbar">
+          <div class="toolbar-inner">
+            <div></div>
+            <div>© 2016-today | BrechtVB</div>
+            <div></div>
+          </div>
+        </div>          
+        <!-- /End of Bottom Toolbar-->
+      </div>
+      <!-- /End of view "view-main" -->
+    </div>
+    <!-- /End of views -->
 
-                
-        <!-- Path to Framework7 Library JS-->
-        <script type="text/javascript" src="js/framework7.min.js"></script>
-        <!-- Path to your app js-->
-        <script type="text/javascript" src="js/my-app.js"></script>
-    </body>
+    <!-- login screen "auto load with class="modal-in" -->
+    <div class="login-screen modal-in">
+      <div class="view">
+        <div class="page">
+          <div class="page-content login-screen-content">
+            <!-- Titel voor login-screen -->
+            <div class="login-screen-title">Car Sharing 2.0</div>
+            <!-- Form voor login-screen -->
+            <form>
+              <div class="list-block">
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title label">Email:</div>
+                      <div class="item-input">
+                        <input type="email" name="email" placeholder="Your email">
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title label">Password:</div>
+                      <div class="item-input">
+                        <input type="password" name="password" placeholder="Your password">
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="list-block">
+                <div class="list-block-label">
+                  <h2><a href="#" class="close-login-screen">Sign in</a></h2>
+                </div>
+                <div class="list-block-label">
+                  <p>No account?</p>
+                  <p><a href="#" class="close-login-screen">Register</a></p>
+                </div>  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/my-app.js"></script>
+  </body>
 </html>
