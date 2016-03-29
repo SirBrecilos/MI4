@@ -32,73 +32,196 @@
       </div>
     </div>
 
-    <!-- Views-->
+    <!-- Views -->
     <div class="views">
-      <!-- Your main view -->
+      <!-- View -->
       <div class="view view-main">
-        
+ 
+				<!-- Top Navbar-->
+				<div class="navbar">
+					<div class="navbar-inner">
+						<div class="left">
+							<div id="navbar-left">
+							</div>
+						</div>
+						<div class="center">
+							<div id="navbar-center">CarSharing
+							</div>
+						</div>
+						<div class="right">
+							<div id="navbar-right">
+								<!-- Right link contains only icon - additional "icon-only" class-->
+								<a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /End of Top Navbar-->
+ 
         <!-- Pages -->
-        <div class="pages">
-          <!-- Page index, additional "navbar-fixed" and "toolbar-fixed" classes-->
-          <div data-page="index" class="page navbar-fixed toolbar-fixed">
-            
-            <!-- Top Navbar-->
-            <div class="navbar">
-              <div class="navbar-inner">
-                <div class="left"></div>
-                <div class="center">Navbar</div>
-                <div class="right">
-                  <!-- Right link contains only icon - additional "icon-only" class-->
-                  <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- /End of Top Navbar-->
-            
+        <div class="pages toolbar-fixed navbar-fixed">
+          <!-- Home page -->
+          <div class="page" data-page="index">
             <div class="page-content">
-              <div class="list-block">
-                <a href="VparkMyCar.html" class="item-link">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">Park my car</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="Vagenda.html" class="item-link">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">Agenda</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="Vstatistics.html" class="item-link">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">Statistics</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="VfindMyCar.html" class="item-link">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">Find my car</div>
-                    </div>
-                  </div>
-                </a>
-                <a href="VaddCar.html" class="item-link">
-                  <div class="item-content">
-                    <div class="item-inner">
-                      <div class="item-title">Add car</div>
-                    </div>
-                  </div>
-                </a>
+							<div class="list-block inset">
+								<p><a href="#" id="btn-addCar" class="button button-big button-fill">Add car</a></p>
+								<p><a href="#" id="btn-findMyCar" class="button button-big button-fill">Find my car</a></p>
+								<p><a href="#" id="btn-agenda" class="button button-big button-fill">Agenda</a></p>
+								<p><a href="#" id="btn-statistics" class="button button-big button-fill">Statistics</a></p>
+								<p><a href="#" id="btn-parkMyCar" class="button button-big button-fill">Park my car</a></p>
               </div>
             </div>
           </div>
+					
+					<!-- Add car page -->
+          <div class="page cached" data-page="addCar">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<p>addCar page</p>
+										<a href="#index" class="button">Go to Index page</a>
+									</div>
+								</div>
+            	</div>
+            </div>
+          </div>
+					
+					<!-- Park car page -->
+          <div class="page cached" data-page="parkCar">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<p>parkCar page</p>
+										<a href="#index" class="button">Go to Index page</a>
+									</div>
+								</div>
+            	</div>
+            </div>
+          </div>
+ 
+          <!-- Agenda page -->
+          <div class="page cached" data-page="agenda">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<a href="#index" class="button">Go to Index page</a>
+									</div>
+								</div>
+							</div>
+            </div>
+          </div>
+					
+					<!-- Statistics page -->
+          <div class="page cached" data-page="statistics">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<p>statistics page</p>
+										<a href="#index" class="button">Go to Index page</a>
+									</div>
+								</div>
+							</div>
+            </div>
+          </div>
+					
+					<!-- findCar page -->
+          <div class="page cached" data-page="findCar">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<p>findCar page</p>
+										<a href="#index" class="button">Go to Index page</a>
+									</div>
+								</div>
+							</div>
+            </div>
+          </div>
+					
+					<!-- register page -->
+          <div class="page cached" data-page="register">
+            <div class="page-content">
+              <div class="page-content">
+								<div class="content-block">
+									<div class="content-block-inner">
+										<form id="register-form" class="list-block">
+											<ul>
+												<!-- Name -->
+												<li>
+													<div class="item-content">
+														<div class="item-inner">
+															<div class="item-title label">Name:</div>
+															<div class="item-input">
+																<input type="text" name="name" placeholder="Your name" id="register-name">
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- Surname -->
+												<li>
+													<div class="item-content">
+														<div class="item-inner">
+															<div class="item-title label">Surname:</div>
+															<div class="item-input">
+																<input type="text" name="surname" placeholder="Your surname" id="register-surname" required>
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- Email -->
+												<li>
+													<div class="item-content">
+														<div class="item-inner">
+															<div class="item-title label">E-mail:</div>
+															<div class="item-input">
+																<input type="email" name="email" placeholder="Your email" id="register-email" required>
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- Password1 -->
+												<li>
+													<div class="item-content">
+														<div class="item-inner">
+															<div class="item-title label">Password:</div>
+															<div class="item-input">
+																<input type="password" name="password1" placeholder="Your password" id="register-password1" required>
+															</div>
+														</div>
+													</div>
+												</li>
+												<!-- Password2 -->
+												<li>
+													<div class="item-content">
+														<div class="item-inner">
+															<div class="item-title label">Repeat password:</div>
+															<div class="item-input">
+																<input type="password" name="password2" placeholder="Your password again" id="register-password2" required>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</form>
+										<!-- register button -->
+										<div class="content-block">
+											<a href="#" class="button button-fill" id="btn-registerForm">Register</a>
+										</div>
+									</div>
+								</div>
+							</div>
+            </div>
+          </div>
+ 
         </div>
-        <!-- /End of Pages -->
-        <!-- Bottom Toolbar-->
-        <div class="toolbar">
+				<!-- /end Pages -->
+				
+				<!-- Bottom Toolbar-->
+        <div class="toolbar toolbar-bottom">
           <div class="toolbar-inner">
             <div></div>
             <div>© 2016-today | BrechtVB</div>
@@ -106,10 +229,9 @@
           </div>
         </div>          
         <!-- /End of Bottom Toolbar-->
+				
       </div>
-      <!-- /End of view "view-main" -->
     </div>
-    <!-- /End of views -->
 
     <!-- login screen "auto load with class="modal-in" -->
     <div class="login-screen modal-in">
