@@ -75,146 +75,253 @@
 					
 					<!-- Add car page -->
           <div class="page cached" data-page="addCar">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<p>addCar page</p>
-										<a href="#index" class="button">Go to Index page</a>
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<form id="addCar-form" class="list-block">
+										<ul>
+											<!-- Merk -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Brand:</div>
+														<div class="item-input">
+															<input type="text" name="merk" placeholder="Brand of the car" id="addCar-merk">
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- nummerplaat -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Licence plate:</div>
+														<div class="item-input">
+															<input type="text" name="nummerplaat" placeholder="Your Licence plate" id="addCar-nummerplaat" required>
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Kilometers -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Kilometers driven:</div>
+														<div class="item-input">
+															<input type="text" name="kilometers" placeholder="Your current kilometers driven" id="addCar-kilometers" required>
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</form>
+									<!-- addCar button -->
+									<div class="content-block">
+										<a href="#" class="button button-fill" id="btn-addCarForm">Add car</a>
 									</div>
 								</div>
-            	</div>
-            </div>
+							</div>
+						</div>
           </div>
 					
 					<!-- Park car page -->
           <div class="page cached" data-page="parkCar">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<p>parkCar page</p>
-										<a href="#index" class="button">Go to Index page</a>
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<div class="list-block">
+										<ul>
+											<!-- Longitude -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Longitude:</div>
+														<div class="item-input">
+																<input type="text" name="longitude" placeholder="0" id="parkCar-long">
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Latitude -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Latitude:</div>
+														<div class="item-input">
+																<input type="text" name="latitude" placeholder="0" id="parkCar-lat">
+														</div>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Kilometers driven:</div>
+														<div class="item-input">
+																<input type="text" name="km" placeholder="0" id="parkCar-km">
+														</div>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Amount fuel added?:</div>
+														<div class="item-input">
+																<input type="text" name="fuel" placeholder="0" id="parkCar-fuel">
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
 									</div>
-								</div>
-            	</div>
-            </div>
-          </div>
- 
-          <!-- Agenda page -->
-          <div class="page cached" data-page="agenda">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<a href="#index" class="button">Go to Index page</a>
-									</div>
-								</div>
-							</div>
-            </div>
-          </div>
-					
-					<!-- Statistics page -->
-          <div class="page cached" data-page="statistics">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<p>statistics page</p>
-										<a href="#index" class="button">Go to Index page</a>
-									</div>
-								</div>
-							</div>
-            </div>
-          </div>
-					
-					<!-- findCar page -->
-          <div class="page cached" data-page="findCar">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<p>findCar page</p>
-										<a href="#index" class="button">Go to Index page</a>
-									</div>
-								</div>
-							</div>
-            </div>
-          </div>
-					
-					<!-- register page -->
-          <div class="page cached" data-page="register">
-            <div class="page-content">
-              <div class="page-content">
-								<div class="content-block">
-									<div class="content-block-inner">
-										<form id="register-form" class="list-block">
-											<ul>
-												<!-- Name -->
-												<li>
-													<div class="item-content">
-														<div class="item-inner">
-															<div class="item-title label">Name:</div>
-															<div class="item-input">
-																<input type="text" name="name" placeholder="Your name" id="register-name">
-															</div>
-														</div>
-													</div>
-												</li>
-												<!-- Surname -->
-												<li>
-													<div class="item-content">
-														<div class="item-inner">
-															<div class="item-title label">Surname:</div>
-															<div class="item-input">
-																<input type="text" name="surname" placeholder="Your surname" id="register-surname" required>
-															</div>
-														</div>
-													</div>
-												</li>
-												<!-- Email -->
-												<li>
-													<div class="item-content">
-														<div class="item-inner">
-															<div class="item-title label">E-mail:</div>
-															<div class="item-input">
-																<input type="email" name="email" placeholder="Your email" id="register-email" required>
-															</div>
-														</div>
-													</div>
-												</li>
-												<!-- Password1 -->
-												<li>
-													<div class="item-content">
-														<div class="item-inner">
-															<div class="item-title label">Password:</div>
-															<div class="item-input">
-																<input type="password" name="password1" placeholder="Your password" id="register-password1" required>
-															</div>
-														</div>
-													</div>
-												</li>
-												<!-- Password2 -->
-												<li>
-													<div class="item-content">
-														<div class="item-inner">
-															<div class="item-title label">Repeat password:</div>
-															<div class="item-input">
-																<input type="password" name="password2" placeholder="Your password again" id="register-password2" required>
-															</div>
-														</div>
-													</div>
-												</li>
-											</ul>
-										</form>
-										<!-- register button -->
-										<div class="content-block">
-											<a href="#" class="button button-fill" id="btn-registerForm">Register</a>
+									<div class="row">
+										<!-- getCoords button -->
+										<div class="col-50">
+											<div class="button button-fill" id="parkCar-getCoords">Get Coords</div>
+										</div>
+										<!-- parkCar button -->
+										<div class="col-50">
+											<div class="button button-fill" id="parkCar-parkCar">Park car</div>
 										</div>
 									</div>
 								</div>
 							</div>
-            </div>
+						</div>
+          </div>
+ 
+          <!-- Agenda page -->
+          <div class="page cached" data-page="agenda">
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<a href="#index" class="button">Go to Index page</a>
+								</div>
+							</div>
+						</div>
+          </div>
+					
+					<!-- Statistics page -->
+          <div class="page cached" data-page="statistics">
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<p>statistics page</p>
+									<a href="#index" class="button">Go to Index page</a>
+								</div>
+							</div>
+						</div>
+          </div>
+					
+					<!-- findCar page -->
+          <div class="page cached" data-page="findCar">
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<div class="list-block">
+										<ul>
+											<!-- Longitude -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Longitude:</div>
+														<div class="item-input">
+																<input type="text" name="coord-long" placeholder="?" id="findCar-long">
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Latitude -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Latitude:</div>
+														<div class="item-input">
+																<input type="text" name="coord-lat" placeholder="?" id="findCar-lat">
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<!-- findCar button -->
+									<div class="button button-fill" id="findCar-findCar">Find Car</div>
+								</div>
+							</div>
+						</div>
+          </div>
+					
+					<!-- register page -->
+          <div class="page cached" data-page="register">
+						<div class="page-content">
+							<div class="content-block">
+								<div class="content-block-inner">
+									<form id="register-form" class="list-block">
+										<ul>
+											<!-- Name -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Name:</div>
+														<div class="item-input">
+															<input type="text" name="name" placeholder="Your name" id="register-name">
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Surname -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Surname:</div>
+														<div class="item-input">
+															<input type="text" name="surname" placeholder="Your surname" id="register-surname" required>
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Email -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">E-mail:</div>
+														<div class="item-input">
+															<input type="email" name="email" placeholder="Your email" id="register-email" required>
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Password1 -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Password:</div>
+														<div class="item-input">
+															<input type="password" name="password1" placeholder="Your password" id="register-password1" required>
+														</div>
+													</div>
+												</div>
+											</li>
+											<!-- Password2 -->
+											<li>
+												<div class="item-content">
+													<div class="item-inner">
+														<div class="item-title label">Repeat password:</div>
+														<div class="item-input">
+															<input type="password" name="password2" placeholder="Your password again" id="register-password2" required>
+														</div>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</form>
+									<!-- register button -->
+									<div class="content-block">
+										<a href="#" class="button button-fill" id="btn-registerForm">Register</a>
+									</div>
+								</div>
+							</div>
+						</div>
           </div>
  
         </div>
@@ -277,7 +384,9 @@
       </div>
     </div>
 
-    <!-- Path to Framework7 Library JS-->
+    <!-- Cordova JS-->
+    <script type="text/javascript" src="cordova.js"></script>
+		<!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="js/framework7.min.js"></script>
     <!-- Path to your app js-->
     <script type="text/javascript" src="js/my-app.js"></script>

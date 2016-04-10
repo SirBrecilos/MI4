@@ -4,8 +4,7 @@
 
 // Initialize your app
 var myApp = new Framework7({
-  pushState: true,
-  material: true
+  pushState: true
 });
 
 // Export selectors engine
@@ -19,6 +18,8 @@ var mainView = myApp.addView('.view-main', {
 // Other variables
 var userLoggedIn = '';
 var apiAddress = "http://bvbmi3.netau.net/php.php";
+var lat = 0;
+var long = 0;
 
 // ------------------------
 // ---- Login screen ------
@@ -167,10 +168,96 @@ function openIndex(){
 // ---- AddCar page -------
 // ------------------------
 
+// click addCar button
+$$('#btn-addCarForm').on('click', function(){
+	if (checkFieldsAddCar()){
+		PHPcallRegisterCar();
+	} else {
+		console.log('field error');
+	}
+});
+
 // open addCar page
 function openAddCar(){
 	mainView.router.load({pageName: 'addCar'});;
 	console.log('function: open addCar page');
+}
+
+// check fields for correct data
+// if yes -> return true
+// if no -> return false
+function checkFieldsAddCar(){
+	var merk = document.getElementById('addCar-merk').value;
+	var nummerplaat = document.getElementById('addCar-nummerplaat').value;
+	var kilometers = document.getElementById('addCar-kilometers').value;
+	
+	if (merk == "") {
+		console.log("merk is emty");
+		document.getElementById('addCar-merk').focus();
+		return false;
+	}
+	if (nummerplaat == "") {
+		console.log("nummerplaat is emty");
+		document.getElementById('addCar-nummerplaat').focus();
+		return false;
+	}
+	if (kilometers == "") {
+		console.log("kilometers is emty");
+		document.getElementById('addCar-kilometers').focus();
+		return false;
+	}
+	
+	var REtext = /^[\w ]+$/;
+	var RElicenceplate = /^[A-Za-z0-9\-]+$/;
+	var REdigits = /^[0-9]+$/;
+	
+	if (!REtext.test(merk)) {
+		console.log("merk contains invalid characters");
+		document.getElementById('addCar-merk').focus();
+		return false;
+	}
+	if (!RElicenceplate.test(nummerplaat)) {
+		console.log("nummerplaat contains invalid characters");
+		document.getElementById('addCar-nummerplaat').focus();
+		return false;
+	}
+	if (!REdigits.test(kilometers)) {
+		console.log("kilometers contains invalid characters");
+		document.getElementById('addCar-kilometers').focus();
+		return false;
+	}
+	return true;
+}
+
+// PHPcall for adding a car
+function PHPcallRegisterCar() {
+	var data = {};
+	data.merk = document.getElementById('addCar-merk').value;
+	data.nummerplaat = document.getElementById('addCar-nummerplaat').value;
+	data.km = document.getElementById('addCar-kilometers').value;
+	data.email = userLoggedIn;
+	data.format = "json";
+	$$.ajax({
+		type: "POST",
+		url: apiAddress + "?m=registerCar",
+		crossDomain: true,
+		data: data,
+		withCredentials: false,
+		success: function (responseData, textStatus, jqXHR) {
+			console.log(JSON.parse(responseData));
+			if (JSON.parse(responseData).data == "success"){
+				console.log("success registration new car");
+				PHPcallCheckCar();
+				openIndex();
+			}
+			if (JSON.parse(responseData).data == "db error"){
+				console.log("failed registration new car");
+			}
+		},
+		error: function (responseData, textStatus, errorThrown) {
+			console.log("fout " + errorThrown);
+		}
+	});
 }
 
 // ------------------------
@@ -192,15 +279,136 @@ function openAgenda(){
 // ---- FindMyCar page ----
 // ------------------------
 
+// getCoords button click
+$$('#findCar-findCar').on('click', function(){
+	PHPcallFindCar();
+});
+
 // open findMyCar page
 function openFindMyCar(){
 	mainView.router.load({pageName: 'findCar'});
 	console.log('function: open findMyCar page');
 }
 
+// PHPcall find car 
+function PHPcallFindCar() {
+	var data = {};
+	data.format = "json";
+	$$.ajax({
+		type: "POST",
+		url: apiAddress + "?m=findCar",
+		crossDomain: true,
+		data: data,
+		withCredentials: false,
+		success: function (responseData, textStatus, jqXHR) {
+			console.log(JSON.parse(responseData));
+			if (JSON.parse(responseData).data == "success"){
+				console.log(JSON.parse(responseData).data);
+				console.log("longitude: " + JSON.parse(responseData).coords.longitude);
+				console.log("latitude: " + JSON.parse(responseData).coords.latitude);
+				document.getElementById('findCar-long').value = JSON.parse(responseData).coords.longitude;
+				document.getElementById('findCar-lat').value = JSON.parse(responseData).coords.latitude;
+			}
+			if (JSON.parse(responseData).data == "db error"){
+				console.log("failed getting coords");
+			}
+		},
+		error: function (responseData, textStatus, errorThrown) {
+			console.log("fout " + errorThrown);
+		}
+	});
+}
+
 // ------------------------
 // ---- ParkMyCar page ----
 // ------------------------
+
+// getCoords button click
+$$('#parkCar-getCoords').on('click', function(){
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+});
+
+// parkCar button click
+$$('#parkCar-parkCar').on('click', function(){
+	if (checkInputFields()){
+		PHPcallParkCar();
+	}
+});
+
+// check of coords zijn opgehaald
+function checkInputFields(){
+	var lat2 = document.getElementById('parkCar-lat').value;
+	var long2 = document.getElementById('parkCar-long').value;
+	var km2 = document.getElementById('parkCar-km').value;
+	var fuel2 = document.getElementById('parkCar-fuel').value;
+	
+	if (lat2 == 0 || lat2 == null ){
+		console.log('geen lat-coord opgegeven');
+		return false;
+	}
+	if (long2 == 0 || long2 == null ){
+		console.log('geen long-coord opgegeven');
+		return false;
+	}
+	if (km2 == 0 || km2 == null ){
+		console.log('geen km opgegeven');
+		return false;
+	}
+	if (fuel2 == 0 || fuel2 == null ){
+		document.getElementById('parkCar-fuel').value = 0;
+	}
+	return true;
+}
+
+// navigator.geolocation onSuccus function
+function onSuccess(position){
+	console.log('in onSuccess()');
+	lat = position.coords.latitude;
+	console.log("latitude: " + lat);
+	long = position.coords.longitude;
+	console.log("longitude: " + long);
+	document.getElementById('parkCar-lat').value = lat;
+	document.getElementById('parkCar-long').value = long;
+}
+
+// navigator.geolocation onError function
+function onError(error){
+	console.log('in onError()');
+	console.log('error-code: ' + error.code);
+	console.log('error-message: ' + error.message);
+}
+
+// PHPcall parkCar
+function PHPcallParkCar() {
+	var data = {};
+	data.kmDriven = document.getElementById('parkCar-km').value;
+	data.fuelAdded = document.getElementById('parkCar-fuel').value;
+	data.long = document.getElementById('parkCar-long').value;
+	data.lat = document.getElementById('parkCar-lat').value;
+	data.email = userLoggedIn;
+	data.format = "json";
+
+	$$.ajax({
+		type: "POST",
+		url: apiAddress + "?m=parkCar",
+		crossDomain: true,
+		data: data,
+		withCredentials: false,
+		success: function (responseData, textStatus, jqXHR) {
+			console.log(JSON.parse(responseData));
+			if (JSON.parse(responseData).data == "success"){
+				console.log("success perkeergegevens toegevoegd");
+				openIndex();
+			}
+			if (JSON.parse(responseData).data == "db error"){
+				console.log("failed adding parking stuff");
+			}
+		},
+		error: function (responseData, textStatus, errorThrown) {
+			console.log("fout " + errorThrown);
+		}
+	});
+}
 
 // open parkMyCar page
 function openParkMyCar(){
@@ -224,7 +432,7 @@ function openStatistics(){
 
 // click register button
 $$('#btn-registerForm').on('click', function(){
-	if (checkFields()){
+	if (checkFieldsRegister()){
 		PHPcallRegisterUser();
 	} else {
 		console.log('field error');
@@ -237,7 +445,10 @@ function openRegister(){
 	console.log('function: open register page');
 }
 
-function checkFields(){
+// check if fields have correct data
+// if yes -> return true
+// if no -> return false
+function checkFieldsRegister(){
 	var name = document.getElementById('register-name').value;
 	var surname = document.getElementById('register-surname').value;
 	var email = document.getElementById('register-email').value;
@@ -271,7 +482,9 @@ function checkFields(){
 	}
 	
 	var REtext = /^[\w ]+$/;
-	var REemail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+	var REemail = /[a-zA-Z0-9]+(?:(\.|_)[A-Za-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?!([a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.))(?:[A-Za-z0-9](?:[a-zA-Z0-9-]*[A-Za-z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/;
+	var RElicenceplate = /([A-Za-z0-9\-]+)/;
+	var REdigits = /^[0-9]+$/;
 	
 	if (!REtext.test(name)) {
 		console.log("name contains invalid characters");
@@ -298,6 +511,7 @@ function checkFields(){
 	return true;
 }
 
+// PHPcall register user
 function PHPcallRegisterUser() {
 	var data = {};
 	data.name = document.getElementById('register-name').value;
@@ -305,7 +519,6 @@ function PHPcallRegisterUser() {
 	data.email = document.getElementById('register-email').value;
 	data.password = document.getElementById('register-password1').value;
 	data.format = "json";
-
 	$$.ajax({
 		type: "POST",
 		url: apiAddress + "?m=register",
