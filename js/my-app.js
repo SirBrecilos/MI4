@@ -68,7 +68,7 @@ function PHPcallLoginUser() {
 				console.log("login succes");
 				userLoggedIn = data.email;
 				console.log("user logged in: " + userLoggedIn);
-				PHPcallCheckCar();
+				PHPcallCheckCar1();
 				openIndex();
 				closeLoginScreen();
 			} else if (JSON.parse(responseData).data == "fail"){
@@ -87,20 +87,52 @@ function PHPcallLoginUser() {
 // check if user has a car registered (PHPCALL)
 // if yes -> show main buttons (findCar - agenda - statistics - parkCar)
 // if no -> only show addCar button
-function PHPcallCheckCar() {
+function PHPcallCheckCar1() {
 	var data = {};
 	data.email = userLoggedIn;
 	data.format = "json";
 	$$.ajax({
 		type: "POST",
-		url: apiAddress + "?m=checkCar",
+		url: apiAddress + "?m=checkCarOwner",
 		crossDomain: true,
 		data: data,
 		withCredentials: false,
 		success: function (responseData, textStatus, jqXHR) {
 			console.log(JSON.parse(responseData));
 			if (JSON.parse(responseData).data == "success"){
-				console.log("User has a car registered");
+				console.log("User has a car registered as owner");
+				$$("#btn-addCar").hide();
+				$$("#btn-findMyCar").show();
+				$$("#btn-agenda").show();
+				$$("#btn-statistics").show();
+				$$("#btn-parkMyCar").show();
+			} else if (JSON.parse(responseData).data == "fail"){
+				PHPcallCheckCar2();
+			}
+			else {
+				console.log(JSON.parse(responseData).data);
+			}
+		},
+		error: function (responseData, textStatus, errorThrown) {
+			console.log("fout: " + errorThrown);
+		}
+	});
+}
+
+function PHPcallCheckCar2() {
+	var data = {};
+	data.email = userLoggedIn;
+	data.format = "json";
+	$$.ajax({
+		type: "POST",
+		url: apiAddress + "?m=checkCarUser",
+		crossDomain: true,
+		data: data,
+		withCredentials: false,
+		success: function (responseData, textStatus, jqXHR) {
+			console.log(JSON.parse(responseData));
+			if (JSON.parse(responseData).data == "success"){
+				console.log("User has a car registered as user");
 				$$("#btn-addCar").hide();
 				$$("#btn-findMyCar").show();
 				$$("#btn-agenda").show();
@@ -247,7 +279,7 @@ function PHPcallRegisterCar() {
 			console.log(JSON.parse(responseData));
 			if (JSON.parse(responseData).data == "success"){
 				console.log("success registration new car");
-				PHPcallCheckCar();
+				PHPcallCheckCar1();
 				openIndex();
 			}
 			if (JSON.parse(responseData).data == "db error"){
