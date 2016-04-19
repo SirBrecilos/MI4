@@ -331,7 +331,7 @@ if (strcasecmp($_GET['m'], 'findCarId2') == 0) {
         
         $sql = "SELECT CarIdOwned
                 FROM CarSharing_Users
-                WHERE Email LIKE '" . $_POST['nummerplaat'] . "' AND CarIdOwned IS NOT NULL '" . "'";
+                WHERE Email LIKE '" . $_POST['email'] . "'";
         
         $result = $conn -> query($sql);
         
@@ -361,7 +361,67 @@ if (strcasecmp($_GET['m'], 'findCarId3') == 0) {
         
         $sql = "SELECT CarIdUsing
                 FROM CarSharing_Users
-                WHERE Email LIKE '" . $_POST['nummerplaat'] . "' AND CarIdUsing IS NOT NULL '" . "'";
+                WHERE Email LIKE '" . $_POST['email'] . "'";
+        
+        $result = $conn -> query($sql);
+        
+        if (!$result) {
+            $response['data'] = "db error";
+        } else {
+            $response['data'] = "success";
+            $response['result_id'] = mysqli_fetch_object($result);
+        }
+    }
+}
+
+/*
+    Ophalen van car ID door middel van key
+    
+    needed param:
+        - email
+*/
+if (strcasecmp($_GET['m'], 'findCarId4') == 0) {
+    if (!$conn) {
+        $response['code'] = 0;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        $response['data'] = mysqli_connect_error();
+    } else {
+        $response['code'] = 1;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        
+        $sql = "SELECT CarId
+                FROM CarSharing_Keys
+                WHERE `Key` LIKE '" . $_POST['key'] . "'";
+        
+        $result = $conn -> query($sql);
+        
+        if (!$result) {
+            $response['data'] = "db error";
+        } else {
+            $response['data'] = "success";
+            $response['result_id'] = mysqli_fetch_object($result);
+        }
+    }
+}
+
+/*
+    Ophalen van user ID door middel van email
+    
+    needed param:
+        - email
+*/
+if (strcasecmp($_GET['m'], 'findUserId') == 0) {
+    if (!$conn) {
+        $response['code'] = 0;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        $response['data'] = mysqli_connect_error();
+    } else {
+        $response['code'] = 1;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        
+        $sql = "SELECT ID
+                FROM CarSharing_Users
+                WHERE Email LIKE '" . $_POST['email'] . "'";
         
         $result = $conn -> query($sql);
         
@@ -446,7 +506,7 @@ if (strcasecmp($_GET['m'], 'updateUserUsing') == 0) {
         - latitude
         - date
 */
-if (strcasecmp($_GET['m'], 'registerCar') == 0) {
+if (strcasecmp($_GET['m'], 'updateCar') == 0) {
     if (!$conn) {
         $response['code'] = 0;
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
@@ -506,10 +566,8 @@ if (strcasecmp($_GET['m'], 'findCar') == 0) {
         - userId
         - carId
         - key
-        - date
-        - date24
 */
-if (strcasecmp($_GET['m'], 'registerCar') == 0) {
+if (strcasecmp($_GET['m'], 'createKey') == 0) {
     if (!$conn) {
         $response['code'] = 0;
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
@@ -518,8 +576,8 @@ if (strcasecmp($_GET['m'], 'registerCar') == 0) {
         $response['code'] = 1;
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
         
-        $sql = "INSERT INTO CarSharing_Keys (UserID, CarId, Key, Start, End) 
-                VALUES ('" . $_POST['userId'] . "', '" . $_POST['carId'] . "', '" . $_POST['key'] . "', '" . $_POST['date'] . "', '" . $_POST['date24'] . "')";
+        $sql = "INSERT INTO CarSharing_Keys (`UserId`, `CarId`, `Key`, `Start`, `End`)
+                VALUES ('" . $_POST['userId'] . "', '" . $_POST['carId'] . "', '" . $_POST['key']. "',NOW() , NOW()+INTERVAL 1 DAY)";
         
         $result = $conn -> query($sql);
         
@@ -530,6 +588,48 @@ if (strcasecmp($_GET['m'], 'registerCar') == 0) {
         }
     }
 }
+
+/* 
+    Check key
+    
+    needed param:
+        - key
+*/
+if (strcasecmp($_GET['m'], 'checkKey') == 0) {
+    if (!$conn) {
+        $response['code'] = 0;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        $response['data'] = mysqli_connect_error();
+    } else {
+        $response['code'] = 1;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        
+        $sql = "SELECT * 
+                FROM CarSharing_Keys 
+                WHERE `Key` LIKE '" . $_POST['key'] . "'";
+                
+        $result = $conn -> query($sql);
+        $rows = array();
+        
+        if (!$result) {
+            $response['data'] = "db error";
+        } else {
+            while ($row = $result -> fetch_assoc()) {
+                $rows[] = $row;
+            }
+            if (count($rows) > 0) {
+                $response['code'] = 1;
+                $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+                $response['data'] = "success";
+            } else {
+                $response['code'] = 1;
+                $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+                $response['data'] = "fail";
+            }
+        }
+    }
+}
+
 
 /*
     Agenda reservatie maken
