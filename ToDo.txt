@@ -1,18 +1,17 @@
 php: 	agenda
 	statistics
-	checkKey (+ check if between 2 dates?)
 
-js:	parkCar
-	FindCar
-	Agenda
+js:	Agenda
 	Statistics
-
 
 html:	AgendaPage
 	StatisticsPage
 
+db:	/
 
 
->> Security toevoegen
 
+>> Security toevoegen!
+
+MD5/SHA2
 

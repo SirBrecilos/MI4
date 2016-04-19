@@ -174,6 +174,8 @@ $$('#btn-addCar').on('click', function () {
 // click on Find Car button
 $$('#btn-findMyCar').on('click', function () {
 	openFindMyCar();
+    PHPcallFindCarID2();
+    PHPcallFindCarID3();
 	checkUserLoggedIn();
 });
 
@@ -192,6 +194,9 @@ $$('#btn-statistics').on('click', function () {
 // click on Park Car button
 $$('#btn-parkMyCar').on('click', function () {
 	openParkMyCar();
+    PHPcallFindCarID2();
+    PHPcallFindCarID3();
+    PHPcallFindUserID();
 	checkUserLoggedIn();
 });
 
@@ -415,7 +420,7 @@ function PHPcallCheckKey() {
 	});
 }
 
-// PHPcall find carID from from email
+// PHPcall find carID from from key
 function PHPcallFindCarID4() {
 	var data = {};
 	data.key = document.getElementById('addCar-key').value;
@@ -506,6 +511,7 @@ function openFindMyCar() {
 // PHPcall find car 
 function PHPcallFindCar() {
 	var data = {};
+    data.carId = CarId;
 	data.format = "json";
 	$$.ajax({
 		type: "POST",
@@ -517,10 +523,10 @@ function PHPcallFindCar() {
 			console.log(JSON.parse(responseData));
 			if (JSON.parse(responseData).data == "success") {
 				console.log(JSON.parse(responseData).data);
-				console.log("longitude: " + JSON.parse(responseData).coords.longitude);
-				console.log("latitude: " + JSON.parse(responseData).coords.latitude);
-				document.getElementById('findCar-long').value = JSON.parse(responseData).coords.longitude;
-				document.getElementById('findCar-lat').value = JSON.parse(responseData).coords.latitude;
+				console.log("longitude: " + JSON.parse(responseData).coords.Longitude);
+				console.log("latitude: " + JSON.parse(responseData).coords.Latitude);
+				document.getElementById('findCar-long').value = JSON.parse(responseData).coords.Longitude;
+				document.getElementById('findCar-lat').value = JSON.parse(responseData).coords.Latitude;
 			}
 			if (JSON.parse(responseData).data == "db error") {
 				console.log("failed getting coords");
@@ -594,16 +600,18 @@ function onError(error) {
 // PHPcall parkCar
 function PHPcallParkCar() {
 	var data = {};
-	data.kmDriven = document.getElementById('parkCar-km').value;
+	data.kmTotal = document.getElementById('parkCar-km').value;
 	data.fuelAdded = document.getElementById('parkCar-fuel').value;
-	data.long = document.getElementById('parkCar-long').value;
-	data.lat = document.getElementById('parkCar-lat').value;
+	data.longitude = document.getElementById('parkCar-long').value;
+	data.latitude = document.getElementById('parkCar-lat').value;
 	data.email = userLoggedIn;
+    data.carId = CarId;
+    data.userId = UserId;
 	data.format = "json";
 
 	$$.ajax({
 		type: "POST",
-		url: apiAddress + "?m=parkCar",
+		url: apiAddress + "?m=updateCar",
 		crossDomain: true,
 		data: data,
 		withCredentials: false,
@@ -685,7 +693,7 @@ function PHPcallFindUserID() {
 	});
 }
 
-// PHPcall find carID from from email
+// PHPcall find carID from from email as owner
 function PHPcallFindCarID2() {
 	var data = {};
 	data.email = userLoggedIn;
@@ -701,10 +709,15 @@ function PHPcallFindCarID2() {
 			if (JSON.parse(responseData).data == "success") {
 				console.log(JSON.parse(responseData).data);
 				console.log("carID: " + JSON.parse(responseData).result_id.CarIdOwned);
-				CarId = JSON.parse(responseData).result_id.CarIdOwned;
+                if (JSON.parse(responseData).result_id.CarIdOwned != null){
+                  CarId = JSON.parse(responseData).result_id.CarIdOwned;
+                } else {
+                  console.log("user is geen Owner");
+                }
+				
 			}
 			if (JSON.parse(responseData).data == "db error") {
-				console.log("failed getting carID");
+				console.log("failed getting carID as owner");
 			}
 		},
 		error: function (responseData, textStatus, errorThrown) {
@@ -713,7 +726,39 @@ function PHPcallFindCarID2() {
 	});
 }
 
-// PHPcall parkCar
+// PHPcall find carID from from email as user
+function PHPcallFindCarID3() {
+	var data = {};
+	data.email = userLoggedIn;
+	data.format = "json";
+	$$.ajax({
+		type: "POST",
+		url: apiAddress + "?m=findCarId3",
+		crossDomain: true,
+		data: data,
+		withCredentials: false,
+		success: function (responseData, textStatus, jqXHR) {
+			console.log(JSON.parse(responseData));
+			if (JSON.parse(responseData).data == "success") {
+				console.log(JSON.parse(responseData).data);
+				console.log("carID: " + JSON.parse(responseData).result_id.CarIdUsing);
+				if (JSON.parse(responseData).result_id.CarIdUsing != null){
+                  CarId = JSON.parse(responseData).result_id.CarIdUsing;
+                } else {
+                  console.log("user is geen User");
+                }
+			}
+			if (JSON.parse(responseData).data == "db error") {
+				console.log("failed getting carID as user");
+			}
+		},
+		error: function (responseData, textStatus, errorThrown) {
+			console.log("fout " + errorThrown);
+		}
+	});
+}
+
+// PHPcall Create a key
 function PHPcallCreateKey() {
 	var data = {};
 	data.userId = UserId;

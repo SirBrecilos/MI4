@@ -497,14 +497,14 @@ if (strcasecmp($_GET['m'], 'updateUserUsing') == 0) {
 /* 
     Updaten van tabel CarUpdates
     
-    needed param:
+    needed param: 
         - email
         - carId
         - kmTotal
         - fuelAdded
         - longitude
         - latitude
-        - date
+        - userId
 */
 if (strcasecmp($_GET['m'], 'updateCar') == 0) {
     if (!$conn) {
@@ -516,7 +516,7 @@ if (strcasecmp($_GET['m'], 'updateCar') == 0) {
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
         
         $sql = "INSERT INTO CarSharing_CarUpdates (CarId, KmTotal, FuelAdded, UserId, Longitude, Latitude, Date) 
-                VALUES ('" . $_POST['carId'] . "', '" . $_POST['kmTotal'] . "', '" . $_POST['fuelAdded'] . "', '" . $_POST['UserId'] . "', '" . $_POST['longitude'] . "', '" . $_POST['latitude'] . "', '" . $_POST['date'] . "')";
+                VALUES ('" . $_POST['carId'] . "', '" . $_POST['kmTotal'] . "', '" . $_POST['fuelAdded'] . "', '" . $_POST['userId'] . "', '" . $_POST['longitude'] . "', '" . $_POST['latitude'] . "', CURDATE())";
         
         $result = $conn -> query($sql);
         
@@ -606,7 +606,7 @@ if (strcasecmp($_GET['m'], 'checkKey') == 0) {
         
         $sql = "SELECT * 
                 FROM CarSharing_Keys 
-                WHERE `Key` LIKE '" . $_POST['key'] . "'";
+                WHERE `Key` LIKE '" . $_POST['key'] . "' AND `Start` <= NOW() AND `End` >= NOW()";
                 
         $result = $conn -> query($sql);
         $rows = array();
