@@ -495,12 +495,44 @@ if (strcasecmp($_GET['m'], 'updateUserUsing') == 0) {
 }
 
 /* 
+    Ophalen van laatste kmTotal
+    
+    needed param: 
+        - userId
+*/
+if (strcasecmp($_GET['m'], 'findKmTotal') == 0) {
+    if (!$conn) {
+        $response['code'] = 0;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        $response['data'] = mysqli_connect_error();
+    } else {
+        $response['code'] = 1;
+        $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
+        
+        $sql = "SELECT KmTotal 
+                FROM CarSharing_CarUpdates
+                WHERE CarId = '" . $_POST['carId'] . "'
+                ORDER BY ID DESC LIMIT 1";
+        
+        $result = $conn -> query($sql);
+        
+        if (!$result) {
+            $response['data'] = "db error";
+        } else {
+            $response['data'] = "success";
+            $response['km'] = mysqli_fetch_object($result);
+        }
+    }
+}
+
+/* 
     Updaten van tabel CarUpdates
     
     needed param: 
         - email
         - carId
         - kmTotal
+        - kmPrev
         - fuelAdded
         - longitude
         - latitude
@@ -515,8 +547,8 @@ if (strcasecmp($_GET['m'], 'updateCar') == 0) {
         $response['code'] = 1;
         $response['status'] = $api_response_code[$response['code']]['HTTP Response'];
         
-        $sql = "INSERT INTO CarSharing_CarUpdates (CarId, KmTotal, FuelAdded, UserId, Longitude, Latitude, Date) 
-                VALUES ('" . $_POST['carId'] . "', '" . $_POST['kmTotal'] . "', '" . $_POST['fuelAdded'] . "', '" . $_POST['userId'] . "', '" . $_POST['longitude'] . "', '" . $_POST['latitude'] . "', CURDATE())";
+        $sql = "INSERT INTO CarSharing_CarUpdates (CarId, KmTotal, KmPrev, FuelAdded, UserId, Longitude, Latitude, Date) 
+                VALUES ('" . $_POST['carId'] . "', '" . $_POST['kmTotal'] . "', '" . $_POST['kmPrev'] . "', '" . $_POST['fuelAdded'] . "', '" . $_POST['userId'] . "', '" . $_POST['longitude'] . "', '" . $_POST['latitude'] . "', NOW())";
         
         $result = $conn -> query($sql);
         
@@ -633,13 +665,6 @@ if (strcasecmp($_GET['m'], 'checkKey') == 0) {
 
 /*
     Agenda reservatie maken
-    
-    needed param:
-        - 
-*/
-
-/*
-    CarUserStats toevoegen
     
     needed param:
         - 
