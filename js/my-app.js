@@ -24,13 +24,24 @@ var UserId = 0
 var CarId = 0
 var KmPrev = 0
 
+// regEx variables
+var REGEXwordsAndSpaces = /[a-zA-Z\s\d]+/
+var REGEXwordsNoSpaces = /[a-zA-Z\d]+/
+var REGEXnoPasswords = /^$|\s/
+var REGEXlicenceplate = /[A-Za-z0-9\-]+/
+var REGEXdigitsOnly = /[0-9]+/
+var REGEXdigitsAndDecimals = /[0-9]+[,.][0-9]+/
+var REGEXemail = /[a-zA-Z0-9]+(?:(\.|_)[A-Za-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?!([a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.))(?:[A-Za-z0-9](?:[a-zA-Z0-9-]*[A-Za-z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/
+
 // ------------------------
 // ---- Login screen ------
 // ------------------------
 
 // Login-button click
 $$('.check-login').on('click', function () {
-  PHPcallLoginUser()
+  if (checkFieldsLogin()) {
+    PHPcallLoginUser()
+  }
 })
 
 // Register-button click
@@ -40,21 +51,40 @@ $$('.register-login').on('click', function () {
 })
 
 // open login-screen
-function openLoginScreen () {
+function openLoginScreen() {
   myApp.loginScreen()
   console.log('function: open login screen')
 }
 
 // close login screen 
-function closeLoginScreen () {
+function closeLoginScreen() {
   myApp.closeModal()
   console.log('function: close login screen')
+}
+
+function checkFieldsLogin() {
+  var email = document.getElementById('email-login').value
+  var password = document.getElementById('password-login').value
+
+  if (!REGEXemail.test(email)) {
+    console.log('ongeldig email ingegeven')
+    document.getElementById('email-login').focus()
+    return false
+  }
+
+  if (REGEXnoPasswords.test(password)) {
+    console.log('ongeldig password ingegeven')
+    document.getElementById('password-login').focus()
+    return false
+  }
+
+  return true
 }
 
 // check login-data (PHPCALL)
 // if correct -> log in to index-page
 // if false -> ...
-function PHPcallLoginUser () {
+function PHPcallLoginUser() {
   var data = {}
   data.email = $$('#email-login').val()
   data.password = $$('#password-login').val()
@@ -89,7 +119,7 @@ function PHPcallLoginUser () {
 // check if user has a car registered (PHPCALL)
 // if yes -> show main buttons (findCar - agenda - statistics - parkCar)
 // if no -> only show addCar button
-function PHPcallCheckCar1 () {
+function PHPcallCheckCar1() {
   var data = {}
   data.email = userLoggedIn
   data.format = 'json'
@@ -121,7 +151,7 @@ function PHPcallCheckCar1 () {
   })
 }
 
-function PHPcallCheckCar2 () {
+function PHPcallCheckCar2() {
   var data = {}
   data.email = userLoggedIn
   data.format = 'json'
@@ -207,7 +237,7 @@ $$('#btn-createKey').on('click', function () {
 })
 
 // open index page
-function openIndex () {
+function openIndex() {
   mainView.router.load({ pageName: 'index' })
   console.log('function: open index page')
 }
@@ -241,11 +271,27 @@ $$('#btn-addCarForm').on('click', function () {
 
 // click addCar after key
 $$('#btn-addCarForm2').on('click', function () {
-  PHPcallCheckKey()
+  if (checkFieldsKey()){
+    PHPcallCheckKey()
+  }
 })
 
+// check fields for correct data
+// if yes -> return true
+// if no -> return false
+function checkFieldsKey() {
+  var key = document.getElementById('addCar-key')
+  
+  if (REGEXnoPasswords.test(key)) {
+    console.log('ongeldige key ingegeven')
+    document.getElementById('addCar-key').focus()
+    return false
+  }
+  return true
+}
+
 // open addCar page
-function openAddCar () {
+function openAddCar() {
   mainView.router.load({ pageName: 'addCar' })
   $$('#addCarButtons').show()
   $$('#addCarFormOwner').hide()
@@ -256,43 +302,24 @@ function openAddCar () {
 // check fields for correct data
 // if yes -> return true
 // if no -> return false
-function checkFieldsAddCar () {
+function checkFieldsAddCar() {
   var merk = document.getElementById('addCar-merk').value
   var nummerplaat = document.getElementById('addCar-nummerplaat').value
   var kilometers = document.getElementById('addCar-kilometers').value
 
-  if (merk == '') {
-    console.log('merk is emty')
+
+  if (!REGEXwordsNoSpaces.test(merk)) {
+    console.log('ongeldig merk ingegeven')
     document.getElementById('addCar-merk').focus()
     return false
   }
-  if (nummerplaat == '') {
-    console.log('nummerplaat is emty')
+  if (!REGEXlicenceplate.test(nummerplaat)) {
+    console.log('ongeldige nummerplaat ingegeven')
     document.getElementById('addCar-nummerplaat').focus()
     return false
   }
-  if (kilometers == '') {
-    console.log('kilometers is emty')
-    document.getElementById('addCar-kilometers').focus()
-    return false
-  }
-
-  var REtext = /^[\w ]+$/
-  var RElicenceplate = /^[A-Za-z0-9\-]+$/
-  var REdigits = /^[0-9]+$/
-
-  if (!REtext.test(merk)) {
-    console.log('merk contains invalid characters')
-    document.getElementById('addCar-merk').focus()
-    return false
-  }
-  if (!RElicenceplate.test(nummerplaat)) {
-    console.log('nummerplaat contains invalid characters')
-    document.getElementById('addCar-nummerplaat').focus()
-    return false
-  }
-  if (!REdigits.test(kilometers)) {
-    console.log('kilometers contains invalid characters')
+  if (!REGEXdigitsOnly.test(kilometers)) {
+    console.log('ongeldige kilometerstand ingegeven')
     document.getElementById('addCar-kilometers').focus()
     return false
   }
@@ -300,7 +327,7 @@ function checkFieldsAddCar () {
 }
 
 // PHPcall for adding a car
-function PHPcallRegisterCar () {
+function PHPcallRegisterCar() {
   var data = {}
   data.merk = document.getElementById('addCar-merk').value
   data.nummerplaat = document.getElementById('addCar-nummerplaat').value
@@ -331,7 +358,7 @@ function PHPcallRegisterCar () {
 }
 
 // PHPcall find carID from created car (as owner) 
-function PHPcallFindCarID1 () {
+function PHPcallFindCarID1() {
   var data = {}
   data.nummerplaat = document.getElementById('addCar-nummerplaat').value
   data.km = document.getElementById('addCar-kilometers').value
@@ -362,7 +389,7 @@ function PHPcallFindCarID1 () {
 }
 
 // PHPcall update user CarOwnedID
-function PHPcallUpdateUserOwned () {
+function PHPcallUpdateUserOwned() {
   var data = {}
   data.id = CarId
   data.email = userLoggedIn
@@ -391,7 +418,7 @@ function PHPcallUpdateUserOwned () {
 }
 
 // PHPcall for check a key
-function PHPcallCheckKey () {
+function PHPcallCheckKey() {
   var data = {}
   data.key = document.getElementById('addCar-key').value
   data.format = 'json'
@@ -420,7 +447,7 @@ function PHPcallCheckKey () {
 }
 
 // PHPcall find carID from from key
-function PHPcallFindCarID4 () {
+function PHPcallFindCarID4() {
   var data = {}
   data.key = document.getElementById('addCar-key').value
   data.format = 'json'
@@ -449,7 +476,7 @@ function PHPcallFindCarID4 () {
 }
 
 // PHPcall update user carUsingID
-function PHPcallUpdateUserUsing () {
+function PHPcallUpdateUserUsing() {
   var data = {}
   data.id = CarId
   data.email = userLoggedIn
@@ -487,7 +514,7 @@ $$('#btn-test').on('click', function () {
 })
 
 // open agenda page
-function openAgenda () {
+function openAgenda() {
   mainView.router.load({ pageName: 'agenda' })
   console.log('function: open agenda page')
 }
@@ -502,14 +529,17 @@ $$('#findCar-findCar').on('click', function () {
 })
 
 // open findMyCar page
-function openFindMyCar () {
-  document.getElementById('btn-goMap').classList.add('disabled')
+function openFindMyCar() {
+  $$('.findcardiv1').show();
+  $$('.findcardiv2').hide();
+  document.getElementById('findCar-long').value = 0
+  document.getElementById('findCar-lat').value = 0
   mainView.router.load({ pageName: 'findCar' })
   console.log('function: open findMyCar page')
 }
 
 // PHPcall find car 
-function PHPcallFindCar () {
+function PHPcallFindCar() {
   var data = {}
   data.carId = CarId
   data.format = 'json'
@@ -527,8 +557,9 @@ function PHPcallFindCar () {
         console.log('latitude: ' + JSON.parse(responseData).coords.Latitude)
         document.getElementById('findCar-long').value = JSON.parse(responseData).coords.Longitude
         document.getElementById('findCar-lat').value = JSON.parse(responseData).coords.Latitude
-        document.getElementById('btn-goMap').setAttribute('href', 'http://maps.apple.com/maps?q=' + JSON.parse(responseData).coords.Latitude + ', ' + JSON.parse(responseData).coords.Longitude)
-        document.getElementById('btn-goMap').classList.remove('disabled')
+        $$('.findcardiv1').hide();
+        $$('.findcardiv2').show();
+        CreateMap(JSON.parse(responseData).coords.Latitude, JSON.parse(responseData).coords.Longitude)
       }
       if (JSON.parse(responseData).data == 'db error') {
         console.log('failed getting coords')
@@ -536,6 +567,23 @@ function PHPcallFindCar () {
     },
     error: function (responseData, textStatus, errorThrown) {
       console.log('fout ' + errorThrown)
+    }
+  })
+}
+
+// Create map
+function CreateMap(parLat, parLong) {
+  map = new GMaps({
+    div: '.mapje-auto',
+    lat: parLat,
+    lng: parLong
+  })
+  map.addMarker({
+    lat: parLat,
+    lng: parLong,
+    title: 'Car',
+    infoWindow: {
+      content: '<p>Car</p>'
     }
   })
 }
@@ -557,26 +605,27 @@ $$('#parkCar-parkCar').on('click', function () {
 })
 
 // check of coords zijn opgehaald + input km en fuel
-function checkInputFields () {
+function checkInputFields() {
   var lat2 = document.getElementById('parkCar-lat').value
   var long2 = document.getElementById('parkCar-long').value
   var km2 = document.getElementById('parkCar-km').value
   var fuel2 = document.getElementById('parkCar-fuel').value
 
-  if (lat2 == 0 || lat2 == null) {
-    console.log('geen lat-coord opgegeven')
+  if (!REGEXdigitsAndDecimals.test(lat2)) {
+    console.log('ongeldige lat-coord ingegeven')
     return false
   }
-  if (long2 == 0 || long2 == null) {
-    console.log('geen long-coord opgegeven')
+  if (!REGEXdigitsAndDecimals.test(long2)) {
+    console.log('ongeldige long-coord ingegeven')
     return false
   }
-  if (km2 == 0 || km2 == null) {
-    console.log('geen km opgegeven')
+  if (!REGEXdigitsOnly.test(km2)) {
+    console.log('ongeldige km ingegeven')
     return false
   }
-  if (fuel2 == 0 || fuel2 == null) {
-    document.getElementById('parkCar-fuel').value = 0
+  if (!REGEXdigitsOnly.test(fuel2)) {
+    console.log('ongeldige fuel ingegeven')
+    return false
   }
 
   if (km2 < KmPrev) {
@@ -588,7 +637,7 @@ function checkInputFields () {
 }
 
 // navigator.geolocation onSuccus function
-function onSuccess (position) {
+function onSuccess(position) {
   console.log('in onSuccess()')
   lat = position.coords.latitude
   console.log('latitude: ' + lat)
@@ -599,14 +648,14 @@ function onSuccess (position) {
 }
 
 // navigator.geolocation onError function
-function onError (error) {
+function onError(error) {
   console.log('in onError()')
   console.log('error-code: ' + error.code)
   console.log('error-message: ' + error.message)
 }
 
 // PHPcall parkCar
-function PHPcallParkCar () {
+function PHPcallParkCar() {
   var data = {}
   data.kmTotal = document.getElementById('parkCar-km').value
   data.kmPrev = KmPrev
@@ -641,7 +690,7 @@ function PHPcallParkCar () {
 }
 
 // PHPcall parkCar
-function PHPcallParkCarInit () {
+function PHPcallParkCarInit() {
   var data = {}
   data.kmTotal = document.getElementById('addCar-kilometers').value
   data.kmPrev = document.getElementById('addCar-kilometers').value
@@ -676,12 +725,15 @@ function PHPcallParkCarInit () {
 }
 
 // open parkMyCar page
-function openParkMyCar () {
+function openParkMyCar() {
+  document.getElementById('parkCar-lat').value = 0
+  document.getElementById('parkCar-long').value = 0
+  document.getElementById('parkCar-fuel').value = 0
   mainView.router.load({ pageName: 'parkCar' })
   console.log('function: open parkMyCar page')
 }
 
-function PHPcallFindKmTotal () {
+function PHPcallFindKmTotal() {
   var data = {}
   data.carId = CarId
   data.format = 'json'
@@ -720,7 +772,7 @@ function PHPcallFindKmTotal () {
 // ------------------------
 
 // open Statistics page
-function openStatistics () {
+function openStatistics() {
   mainView.router.load({ pageName: 'statistics' })
   console.log('function: open statistics page')
 }
@@ -730,21 +782,30 @@ function openStatistics () {
 // ------------------------
 
 // open CreateKey page
-function openCreateKey () {
+function openCreateKey() {
   mainView.router.load({ pageName: 'createKey' })
   console.log('function: open createKey page')
 }
 
 $$('#btn-createNewKey').on('click', function () {
-  if (document.getElementById('createKey-key').value == '') {
-    console.log('geen key ingegeven')
-  } else {
+  if (checkValueKey()) {
     PHPcallCreateKey()
   }
 })
 
+function checkValueKey() {
+  var key = document.getElementById('createKey-key').value
+  
+  if (REGEXnoPasswords.test(key)){
+    console.log('ongeldige key ingegeven')
+    document.getElementById('createKey-key').focus()
+    return false
+  }
+  return true
+}
+
 // PHPcall find userID from from email
-function PHPcallFindUserID () {
+function PHPcallFindUserID() {
   var data = {}
   data.email = userLoggedIn
   data.format = 'json'
@@ -772,7 +833,7 @@ function PHPcallFindUserID () {
 }
 
 // PHPcall find carID from from email as owner
-function PHPcallFindCarID2 () {
+function PHPcallFindCarID2() {
   var data = {}
   data.email = userLoggedIn
   data.format = 'json'
@@ -805,7 +866,7 @@ function PHPcallFindCarID2 () {
 }
 
 // PHPcall find carID from from email as user
-function PHPcallFindCarID3 () {
+function PHPcallFindCarID3() {
   var data = {}
   data.email = userLoggedIn
   data.format = 'json'
@@ -838,7 +899,7 @@ function PHPcallFindCarID3 () {
 }
 
 // PHPcall Create a key
-function PHPcallCreateKey () {
+function PHPcallCreateKey() {
   var data = {}
   data.userId = UserId
   data.carId = CarId
@@ -881,7 +942,7 @@ $$('#btn-registerForm').on('click', function () {
 })
 
 // open Register pager
-function openRegister () {
+function openRegister() {
   mainView.router.load({ pageName: 'register' })
   console.log('function: open register page')
 }
@@ -889,71 +950,58 @@ function openRegister () {
 // check if fields have correct data
 // if yes -> return true
 // if no -> return false
-function checkFieldsRegister () {
+function checkFieldsRegister() {
   var name = document.getElementById('register-name').value
   var surname = document.getElementById('register-surname').value
   var email = document.getElementById('register-email').value
   var password1 = document.getElementById('register-password1').value
   var password2 = document.getElementById('register-password2').value
 
-  if (name == '') {
-    console.log('name is emty')
+  if (!REGEXwordsAndSpaces.test(name)) {
+    console.log('ongeldige naam ingegeven')
     document.getElementById('register-name').focus()
     return false
   }
-  if (surname == '') {
-    console.log('surname is emty')
+
+  if (!REGEXwordsAndSpaces.test(surname)) {
+    console.log('ongeldige voornaam ingegeven')
     document.getElementById('register-surname').focus()
     return false
   }
-  if (email == '') {
-    console.log('email is emty')
+
+  if (!REGEXemail.test(email)) {
+    console.log('ongeldige email ingegeven')
     document.getElementById('register-email').focus()
     return false
   }
-  if (password1 == '') {
-    console.log('password is emty')
+
+  if (REGEXnoPasswords.test(password1)) {
+    console.log('ongeldig password1 ingegeven')
+    document.getElementById('register-password1').value = ''
+    document.getElementById('register-password2').value = ''
     document.getElementById('register-password1').focus()
     return false
   }
-  if (password2 == '') {
-    console.log('password is emty')
-    document.getElementById('register-password2').focus()
+
+  if (REGEXnoPasswords.test(password2)) {
+    console.log('ongeldig password2 ingegeven')
+    document.getElementById('register-password1').value = ''
+    document.getElementById('register-password2').value = ''
+    document.getElementById('register-password1').focus()
     return false
   }
 
-  var REtext = /^[\w ]+$/
-  var REemail = /[a-zA-Z0-9]+(?:(\.|_)[A-Za-z0-9!#$%&'*+/=?^`{|}~-]+)*@(?!([a-zA-Z0-9]*\.[a-zA-Z0-9]*\.[a-zA-Z0-9]*\.))(?:[A-Za-z0-9](?:[a-zA-Z0-9-]*[A-Za-z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/
-  var RElicenceplate = /([A-Za-z0-9\-]+)/
-  var REdigits = /^[0-9]+$/
-
-  if (!REtext.test(name)) {
-    console.log('name contains invalid characters')
-    document.getElementById('register-name').focus()
-    return false
-  }
-  if (!REtext.test(surname)) {
-    console.log('surname contains invalid characters')
-    document.getElementById('register-surname').focus()
-    return false
-  }
-  if (!REemail.test(email)) {
-    console.log('email contains invalid characters')
-    document.getElementById('register-email').focus()
-    return false
-  }
-  console.log(password1 + ' & ' + password2)
   if (password1 != password2) {
     console.log('passwords do not match')
     document.getElementById('register-password2').focus()
     return false
   }
 
-  return true
+  return true;
 }
 
 // PHPcall register user
-function PHPcallRegisterUser () {
+function PHPcallRegisterUser() {
   var data = {}
   data.name = document.getElementById('register-name').value
   data.surname = document.getElementById('register-surname').value
@@ -989,7 +1037,7 @@ function PHPcallRegisterUser () {
 // check if a user is logged in on every page init
 // if yes -> do nothing
 // if no -> show login-page
-function checkUserLoggedIn () {
+function checkUserLoggedIn() {
   if (userLoggedIn == '') {
     openLoginScreen()
   } else
